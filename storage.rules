@@ -1,0 +1,28 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Event images
+    match /events/{imageId} {
+      // Anyone can read event images
+      allow read: if true;
+
+      // Only authenticated users can upload images
+      allow create: if isAuthenticated() &&
+                       request.resource.size < 5 * 1024 * 1024 && // Max 5MB
+                       request.resource.contentType.matches('image/.*');
+
+      // Only authenticated users can update their images
+      allow update: if isAuthenticated() &&
+                       request.resource.size < 5 * 1024 * 1024 &&
+                       request.resource.contentType.matches('image/.*');
+
+      // Only authenticated users can delete images
+      allow delete: if isAuthenticated();
+    }
+  }
+}
