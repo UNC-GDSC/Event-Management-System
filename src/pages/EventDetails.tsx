@@ -11,8 +11,10 @@ import FavoriteButton from '../components/events/FavoriteButton';
 import ShareEvent from '../components/events/ShareEvent';
 import QRCodeModal from '../components/events/QRCodeModal';
 import ExportAttendees from '../components/events/ExportAttendees';
+import Reviews from '../components/events/Reviews';
 import Loading from '../components/common/Loading';
 import ErrorMessage from '../components/common/ErrorMessage';
+import { useRSVPs } from '../hooks/useRSVPs';
 import { FiCalendar, FiMapPin, FiUsers, FiClock, FiEdit, FiTrash2, FiArrowLeft, FiShare2, FiDownload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
@@ -20,6 +22,7 @@ const EventDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { rsvps } = useRSVPs(user?.uid);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +83,11 @@ const EventDetails: React.FC = () => {
 
   const status = getEventStatus(event.startDate, event.endDate);
   const isCreator = user?.uid === event.createdBy;
+
+  // Check if user attended the event and it's completed
+  const userRSVP = rsvps.find((r) => r.eventId === event.id && r.userId === user?.uid);
+  const userAttended = userRSVP?.status === 'going';
+  const canReview = userAttended && status === 'completed';
 
   const statusColors = {
     upcoming: 'bg-blue-100 text-blue-800',
@@ -219,6 +227,9 @@ const EventDetails: React.FC = () => {
 
             {/* Comments Section */}
             <Comments eventId={event.id} />
+
+            {/* Reviews Section */}
+            <Reviews event={event} canReview={canReview} />
 
             {/* Attendees List */}
             <AttendeesList eventId={event.id} />

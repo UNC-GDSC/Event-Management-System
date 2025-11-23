@@ -15,6 +15,9 @@ import EditEvent from './pages/EditEvent';
 import Dashboard from './pages/Dashboard';
 import Announcements from './pages/Announcements';
 import AdminDashboard from './pages/AdminDashboard';
+import CalendarView from './pages/CalendarView';
+import UserProfile from './pages/UserProfile';
+import Notifications from './pages/Notifications';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -30,6 +33,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/events" element={<Events />} />
+                <Route path="/calendar" element={<CalendarView />} />
                 <Route path="/events/:id" element={<EventDetails />} />
                 <Route
                   path="/events/:id/edit"
@@ -44,6 +48,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute>
+                      <Notifications />
                     </ProtectedRoute>
                   }
                 />

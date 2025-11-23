@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import DarkModeToggle from '../common/DarkModeToggle';
-import { FiMenu, FiX, FiCalendar, FiLogOut, FiUser, FiHome, FiBell, FiGrid } from 'react-icons/fi';
+import { FiMenu, FiX, FiCalendar, FiLogOut, FiUser, FiHome, FiBell, FiGrid, FiLayout } from 'react-icons/fi';
 
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -23,8 +23,11 @@ const Navbar: React.FC = () => {
     ? [
         { to: '/', icon: FiHome, label: 'Home' },
         { to: '/events', icon: FiCalendar, label: 'Events' },
+        { to: '/calendar', icon: FiLayout, label: 'Calendar' },
+        { to: '/notifications', icon: FiBell, label: 'Notifications' },
         { to: '/announcements', icon: FiBell, label: 'Announcements' },
         { to: '/dashboard', icon: FiUser, label: 'Dashboard' },
+        { to: '/profile', icon: FiUser, label: 'Profile' },
         ...(user.role === 'admin'
           ? [{ to: '/admin', icon: FiGrid, label: 'Admin' }]
           : []),

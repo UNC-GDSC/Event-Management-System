@@ -3,6 +3,7 @@ import type { RSVP } from '../types';
 import {
   getRSVPsByEvent,
   getRSVPByUserAndEvent,
+  getRSVPsByUser,
   subscribeToEventRSVPs,
 } from '../services/rsvpService';
 
@@ -75,4 +76,32 @@ export const useUserRSVP = (userId: string, eventId: string) => {
   };
 
   return { rsvp, loading, error, refresh };
+};
+
+export const useRSVPs = (userId?: string) => {
+  const [rsvps, setRsvps] = useState<RSVP[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchRSVPs = async () => {
+      try {
+        const fetchedRSVPs = await getRSVPsByUser(userId);
+        setRsvps(fetchedRSVPs);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRSVPs();
+  }, [userId]);
+
+  return { rsvps, loading, error };
 };

@@ -3,6 +3,7 @@ export interface User {
   email: string;
   displayName: string;
   photoURL?: string;
+  bio?: string;
   role: 'admin' | 'user';
   createdAt: Date;
 }
@@ -81,3 +82,25 @@ export type EventFilter = {
   endDate?: Date;
   searchTerm?: string;
 };
+
+export interface Review {
+  id: string;
+  eventId: string;
+  userId: string;
+  userName: string;
+  userPhoto?: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: 'rsvp' | 'comment' | 'review' | 'announcement' | 'reminder';
+  title: string;
+  message: string;
+  eventId?: string;
+  isRead: boolean;
+  createdAt: Date;
+}

@@ -4,6 +4,7 @@ import EventCard from '../components/events/EventCard';
 import Loading from '../components/common/Loading';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { FiSearch, FiFilter } from 'react-icons/fi';
+import Fuse from 'fuse.js';
 
 const Events: React.FC = () => {
   const { events, loading, error } = useEvents(true);
@@ -14,22 +15,37 @@ const Events: React.FC = () => {
   const categories = ['All', 'Conference', 'Workshop', 'Seminar', 'Meetup', 'Social', 'Sports', 'Arts', 'Education', 'Technology', 'Other'];
   const statuses = ['All', 'upcoming', 'ongoing', 'completed'];
 
-  const filteredEvents = useMemo(() => {
-    return events.filter((event) => {
-      const matchesSearch =
-        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.location.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesCategory =
-        !selectedCategory || selectedCategory === 'All' || event.category === selectedCategory;
-
-      const matchesStatus =
-        !selectedStatus || selectedStatus === 'All' || event.status === selectedStatus;
-
-      return matchesSearch && matchesCategory && matchesStatus;
+  // Configure Fuse.js for fuzzy search
+  const fuse = useMemo(() => {
+    return new Fuse(events, {
+      keys: ['title', 'description', 'location', 'category', 'tags', 'createdByName'],
+      threshold: 0.3, // Lower threshold means stricter matching
+      includeScore: true,
+      minMatchCharLength: 2,
     });
-  }, [events, searchTerm, selectedCategory, selectedStatus]);
+  }, [events]);
+
+  const filteredEvents = useMemo(() => {
+    let results = events;
+
+    // Apply fuzzy search if search term exists
+    if (searchTerm.trim()) {
+      const fuseResults = fuse.search(searchTerm);
+      results = fuseResults.map((result) => result.item);
+    }
+
+    // Apply category filter
+    if (selectedCategory && selectedCategory !== 'All') {
+      results = results.filter((event) => event.category === selectedCategory);
+    }
+
+    // Apply status filter
+    if (selectedStatus && selectedStatus !== 'All') {
+      results = results.filter((event) => event.status === selectedStatus);
+    }
+
+    return results;
+  }, [events, searchTerm, selectedCategory, selectedStatus, fuse]);
 
   if (loading) {
     return <Loading fullScreen message="Loading events..." />;
@@ -55,7 +71,7 @@ const Events: React.FC = () => {
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
               <input
                 type="text"
-                placeholder="Search events..."
+                placeholder="Smart search events (title, description, location, tags, organizer)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="input-field pl-10"

@@ -1,0 +1,96 @@
+/* Calendar Dark Mode Styles */
+.dark .rbc-calendar {
+  color: #fff;
+}
+
+.dark .rbc-header {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #fff;
+}
+
+.dark .rbc-month-view,
+.dark .rbc-time-view,
+.dark .rbc-agenda-view {
+  background-color: #111827;
+  border-color: #374151;
+}
+
+.dark .rbc-day-bg {
+  background-color: #111827;
+  border-color: #374151;
+}
+
+.dark .rbc-off-range-bg {
+  background-color: #0f172a;
+}
+
+.dark .rbc-today {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark .rbc-date-cell {
+  color: #d1d5db;
+}
+
+.dark .rbc-button-link {
+  color: #d1d5db;
+}
+
+.dark .rbc-toolbar button {
+  background-color: #374151;
+  color: #fff;
+  border-color: #4b5563;
+}
+
+.dark .rbc-toolbar button:hover {
+  background-color: #4b5563;
+}
+
+.dark .rbc-toolbar button.rbc-active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.dark .rbc-show-more {
+  background-color: transparent;
+  color: #3b82f6;
+}
+
+.dark .rbc-event {
+  background-color: #3b82f6;
+}
+
+.dark .rbc-event.rbc-selected {
+  background-color: #2563eb;
+}
+
+.dark .rbc-slot-selection {
+  background-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Light Mode Refinements */
+.rbc-calendar {
+  font-family: inherit;
+}
+
+.rbc-toolbar {
+  margin-bottom: 1rem;
+}
+
+.rbc-toolbar button {
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.rbc-event {
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.rbc-event:hover {
+  opacity: 0.8;
+}
