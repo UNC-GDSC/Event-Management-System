@@ -4,10 +4,45 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>event-management-system</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="EventHub - Manage events, RSVPs, and announcements with ease. Create, discover, and attend amazing events in your community." />
+    <meta name="keywords" content="events, event management, RSVP, announcements, community events" />
+    <meta name="author" content="EventHub" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="EventHub - Event Management System" />
+    <meta property="og:description" content="Manage events, RSVPs, and announcements with ease" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EventHub - Event Management System" />
+    <meta name="twitter:description" content="Manage events, RSVPs, and announcements with ease" />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <title>EventHub - Event Management System</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {
+            console.log('Service Worker registration failed');
+          });
+        });
+      }
+    </script>
   </body>
 </html>
